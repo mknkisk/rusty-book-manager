@@ -1,7 +1,6 @@
 use axum::{extract::State, http::StatusCode};
 use registry::AppRegistry;
 
-
 pub async fn health_check() -> StatusCode {
     StatusCode::OK
 }

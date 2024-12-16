@@ -1,12 +1,13 @@
 use std::sync::Arc;
 
 use adapter::{database::ConnectionPool, repository::{book::BookRepositoryImpl, health::HealthCheckRepositoryImpl}};
+use kernel::repository::book::BookRepository;
 use kernel::repository::health::HealthCheckRepository;
 
 #[derive(Clone)]
 pub struct AppRegistry {
-    health_check_repository: Arc<HealthCheckRepositoryImpl>,
-    book_repository: Arc<BookRepositoryImpl>,
+    health_check_repository: Arc<dyn HealthCheckRepository>,
+    book_repository: Arc<dyn BookRepository>,
 }
 
 impl AppRegistry {
@@ -25,7 +26,7 @@ impl AppRegistry {
         self.health_check_repository.clone()
     }
 
-    pub fn book_repository(&self) -> Arc<BookRepositoryImpl> {
+    pub fn book_repository(&self) -> Arc<dyn BookRepository> {
         self.book_repository.clone()
     }
 }
