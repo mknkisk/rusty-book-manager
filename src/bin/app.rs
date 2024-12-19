@@ -1,7 +1,7 @@
 use std::net::{Ipv4Addr, SocketAddr};
 
 use adapter::database::connect_database_with;
-use anyhow::{Error, Result};
+use anyhow::Result;
 use api::route::{book::build_book_routers, health::build_health_check_routers};
 use axum::Router;
 use registry::AppRegistry;
@@ -25,7 +25,6 @@ async fn main() -> Result<()> {
 }
 
 fn init_logger() -> Result<()> {
-    let env = which();
     let log_level = match which() {
         Environment::Development => "debug",
         Environment::Production => "info",
@@ -41,7 +40,7 @@ fn init_logger() -> Result<()> {
     tracing_subscriber::registry()
         .with(subscriber)
         .with(env_filter)
-        .init()?;
+        .try_init()?;
 
     Ok(())
 }
